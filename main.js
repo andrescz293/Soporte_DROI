@@ -5,7 +5,7 @@ const path = require('path')
 require('electron-reload')(__dirname)
 
 let mainWindow
-let child
+let login
 let num_window = 0;
 let tray;
 
@@ -13,8 +13,9 @@ function createWindow (  ) {
 
    // Crea la ventana principal.
     mainWindow = new BrowserWindow({
-    width: 900,
-    height: 600,
+    width: 400,
+    resizable: false,
+    height: 728,
     icon: path.join(__dirname, "/src/ui/img/ProfileDefault.png"),
     title: "Soportes DROI",
     fullscreen: false,
@@ -52,7 +53,7 @@ ipcMain.on('Main_Channel' , (event, arg) => {
       // Oculta la ventana principal mientras este abierto el login
       mainWindow.hide();
       
-      child = new BrowserWindow({ parent: mainWindow, modal: true, show: false , frame: false, 
+      login = new BrowserWindow({ parent: mainWindow, modal: true, show: false , frame: false, 
         resizable: true,
         movable: true,
         webPreferences: {
@@ -61,12 +62,12 @@ ipcMain.on('Main_Channel' , (event, arg) => {
           enableRemoteModule: true,
         }  })
 
-      child.loadFile(__dirname+`/src/ui/login.html`);
-      child.once('ready-to-show', () => {
-        child.show();      
+      login.loadFile(__dirname+`/src/ui/login.html`);
+      login.once('ready-to-show', () => {
+        login.show();      
 
         // Open the DevTools.
-        child.webContents.openDevTools()
+        login.webContents.openDevTools()
 
       })
 
@@ -75,7 +76,7 @@ ipcMain.on('Main_Channel' , (event, arg) => {
   }
 
   if (arg == "login_Validation") {
-    child.close();
+    login.close();
     mainWindow.show();
     mainWindow.webContents.send('Index_Channel' , 'Login_Success');
     num_window = 0;
@@ -92,24 +93,22 @@ ipcMain.on('Main_Channel' , (event, arg) => {
     }
   }
   if (arg == 'Close_Index') {
-    mainWindow.destroy();
-    mainWindow.destroy();
-    app.quit();
+    mainWindow.hide();
   }
 
   if (arg == 'Minimize_Login') {
-    child.minimize(); 
+    login.minimize(); 
   }
   if (arg == 'Maximize_Login') {
-    if (!child.isMaximized()) {
-      child.maximize();          
+    if (!login.isMaximized()) {
+      login.maximize();          
     } else {
-      child.unmaximize();
+      login.unmaximize();
     }
   }
   if (arg == 'Close_Login') {
     mainWindow.destroy();
-    child.destroy();
+    login.destroy();
     app.quit();
   }
   

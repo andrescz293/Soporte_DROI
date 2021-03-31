@@ -40,17 +40,18 @@ ipcRenderer.on('Index_Channel' , (event , arg) => {
   if (arg == 'Login_Success') {
     load_user();
     GetPendingSupports();
-    console.log(Array_Pendings);
+    
   }
 })
 
 
-const GetPendingSupports = async () => {
+const GetPendingSupports = async (Id_Advisor) => {
   console.log("Getting data pending...");
-  const request = await fetch("https://www.gesadmin.co/licenses/apidroi/public/apr/supports/pendings");
+  const request = await fetch("https://www.gesadmin.co/licenses/apidroi/public/apr/supports/pendings/"+Id_Advisor);
   const data = await request.json();
   Array_Pendings = data;
   List_PendingSupports();
+  console.log(Array_Pendings);
 };
 
 function closeSession (){
@@ -63,6 +64,8 @@ function closeSession (){
 
 function load_user(){
   data_user = JSON.parse(localStorage.getItem('user_data'));
+  document.getElementById('user_name').innerHTML = data_user.Treatment +" "+ data_user.First_Name +" "+ data_user.Surname;
+  document.getElementById('user_rol').innerHTML = data_user.Name_Roll;
 }
 
 function List_PendingSupports (){
