@@ -7,10 +7,33 @@ document.addEventListener("DOMContentLoaded", function(event) {
   // localStorage.setItem('User_Code' , "Prueba") ;
   if ( localStorage.getItem('user_data')  == null || localStorage.getItem('user_data')  ==  "" ) {
     console.log('sin usuario');
-    ipcRenderer.send('asynchronous-message' , '');
+    ipcRenderer.send('Main_Channel' , 'Login_window');
   }else{
     load_user()
   }
+
+    /* CONTROL DE BOTONES DE VENTANA */
+
+    document.getElementById("min-btn").addEventListener("click", function (e) {
+      ipcRenderer.send('Main_Channel' , 'Minimize_Index');
+    });
+  
+    document.getElementById("max-btn").addEventListener("click", function (e) {
+      ipcRenderer.send('Main_Channel' , 'Maximize_Index');
+      if ( document.getElementsByClassName("header_title")[0].classList.contains('block_drag') ) {
+        document.getElementsByClassName("header_title")[0].classList.remove('block_drag');
+        document.getElementsByClassName('header_title')[0].setAttribute('draggable', true);
+      } else {
+        document.getElementsByClassName("header_title")[0].classList.add('block_drag');
+        document.getElementsByClassName('header_title')[0].setAttribute('draggable', false);
+      }
+    });
+  
+    document.getElementById("close-btn").addEventListener("click", function (e) {
+      ipcRenderer.send('Main_Channel' , 'Close_Index');
+    }); 
+  
+    /* CONTROL DE BOTONES DE VENTANA */
 });
 
 ipcRenderer.on('Index_Channel' , (event , arg) => {
@@ -32,10 +55,10 @@ const GetPendingSupports = async () => {
 
 function closeSession (){
   localStorage.removeItem('user_data');
-  ipcRenderer.send('Main_Channel' , '');
-  setTimeout(() => {
-    ipcRenderer.send('asynchronous-message' , '');  
-  }, 1000)
+  ipcRenderer.send('Main_Channel' , 'Login_window');
+  // setTimeout(() => {
+  //   ipcRenderer.send('Main_Channel' , 'login_Validation');  
+  // }, 1000)
 }
 
 function load_user(){

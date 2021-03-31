@@ -1,33 +1,33 @@
 const ipcRenderer = require('electron').ipcRenderer;
 
 document.addEventListener("DOMContentLoaded", function(event) {
+    
+  /* CONTROL DE BOTONES DE VENTANA */
+
+  document.getElementById("min-btn").addEventListener("click", function (e) {
+    ipcRenderer.send('Main_Channel' , 'Minimize_Login');
+  });
+
+  document.getElementById("max-btn").addEventListener("click", function (e) {
+    ipcRenderer.send('Main_Channel' , 'Maximize_Login');
+    if ( document.getElementsByClassName("header_title")[0].classList.contains('block_drag') ) {
+      document.getElementsByClassName("header_title")[0].classList.remove('block_drag');
+      document.getElementsByClassName('header_title')[0].setAttribute('draggable', true);
+    } else {
+      document.getElementsByClassName("header_title")[0].classList.add('block_drag');
+      document.getElementsByClassName('header_title')[0].setAttribute('draggable', false);
+    }
+  });
+
+  document.getElementById("close-btn").addEventListener("click", function (e) {
+    ipcRenderer.send('Main_Channel' , 'Close_Login');
+  }); 
+
+  /* CONTROL DE BOTONES DE VENTANA */
 
 });
 
 
-/* CONTROL DE BOTONES DE VENTANA */
-// const remote = require('electron').remote;
-
-// document.getElementById("min-btn").addEventListener("click", function (e) {
-//   var window = remote.getCurrentWindow();
-//   window.minimize(); 
-// });
-
-// document.getElementById("max-btn").addEventListener("click", function (e) {
-//   var window = remote.getCurrentWindow();
-//   if (!window.isMaximized()) {
-//     window.maximize();          
-//   } else {
-//     window.unmaximize();
-//   }
-// });
-
-// document.getElementById("close-btn").addEventListener("click", function (e) {
-//   var window = remote.getCurrentWindow();
-//   window.close();
-// }); 
-
-/* CONTROL DE BOTONES DE VENTANA */
 
 
 /* API LOGIN */
@@ -59,13 +59,12 @@ const ValidateUser = async () => {
   .then( res => res.json())
   .then( data =>{
     if (data.response.status == "success") {
+      console.log(data.response);
       localStorage.setItem('user_data' , JSON.stringify(data.response.data))
       document.getElementById('response_login').innerHTML = ` <div class="alert alert-success" style="width: 80%;left: 10%;"> iniciando sesión </div>`
       setTimeout(() => {
-        ipcRenderer.send('Main_Channel' , 'login');
+        ipcRenderer.send('Main_Channel' , 'login_Validation');
       }, 1500)
-      
-
     }else{
       document.getElementById('response_login').innerHTML = ` <div class="alert alert-danger" style="width: 80%;left: 10%;"> ${data.response.text} </div>`
       console.log(data);

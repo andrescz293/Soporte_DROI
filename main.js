@@ -11,10 +11,15 @@ let tray;
 
 function createWindow (  ) {
 
-   // Create the browser window.
+   // Crea la ventana principal.
     mainWindow = new BrowserWindow({
     width: 900,
     height: 600,
+    icon: path.join(__dirname, "/src/ui/img/ProfileDefault.png"),
+    title: "Soportes DROI",
+    fullscreen: false,
+    frame: false,
+    backgroundColor: "#dedede",
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -23,31 +28,33 @@ function createWindow (  ) {
     },
   })
 
+  // Escucha // Evita cerrar el programa
   mainWindow.on('close', e => {
     e.preventDefault();
     mainWindow.hide();
   });
 
-  // and load the index.html of the app.
   mainWindow.loadFile('index.html')
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools()
 }
-
+// Listeners de los renders principal y secundarios
 ipcMain.on('asynchronous-message', (event, arg) => {
-  if (arg == "new_window") {
-    // event.returnValue = 'pong'
-    let win = new BrowserWindow({width:1100, height:600})
-    win.loadURL(`file://${__dirname}/src/ui/login.html`)  
-  }else{
-    console.log(num_window);
+    
+})
+
+ipcMain.on('Main_Channel' , (event, arg) => {
+  console.log(arg);
+  if (arg == "Login_window") {
     if (num_window == 0){
 
       // Oculta la ventana principal mientras este abierto el login
       mainWindow.hide();
       
-      child = new BrowserWindow({ parent: mainWindow, modal: true, show: false , frame: false, transparent: true,
+      child = new BrowserWindow({ parent: mainWindow, modal: true, show: false , frame: false, 
+        resizable: true,
+        movable: true,
         webPreferences: {
           nodeIntegration: true,
           contextIsolation: false,
@@ -66,16 +73,54 @@ ipcMain.on('asynchronous-message', (event, arg) => {
       num_window++;
     }
   }
+
+  if (arg == "login_Validation") {
+    child.close();
+    mainWindow.show();
+    mainWindow.webContents.send('Index_Channel' , 'Login_Success');
+    num_window = 0;
+  }
+
+  if (arg == 'Minimize_Index') {
+    mainWindow.minimize(); 
+  }
+  if (arg == 'Maximize_Index') {
+    if (!mainWindow.isMaximized()) {
+      mainWindow.maximize();          
+    } else {
+      mainWindow.unmaximize();
+    }
+  }
+  if (arg == 'Close_Index') {
+    mainWindow.destroy();
+    mainWindow.destroy();
+    app.quit();
+  }
+
+  if (arg == 'Minimize_Login') {
+    child.minimize(); 
+  }
+  if (arg == 'Maximize_Login') {
+    if (!child.isMaximized()) {
+      child.maximize();          
+    } else {
+      child.unmaximize();
+    }
+  }
+  if (arg == 'Close_Login') {
+    mainWindow.destroy();
+    child.destroy();
+    app.quit();
+  }
+  
+  // if( arg == "Close_Session"){
+  //   mainWindow.show();
+  //   num_window = 0;
+  // }
+
 })
 
-ipcMain.on('Main_Channel' , (event, arg) => {
-  if (arg == "login") {
-    child.close();
-    mainWindow.webContents.send('Index_Channel' , 'Login_Success');
-  }
-  mainWindow.show();
-  num_window = 0;
-})
+
 
 
 app.whenReady().then(() => {
@@ -87,6 +132,10 @@ app.whenReady().then(() => {
 
 app.on('ready', () => {
   appIcon = new Tray('src/ui/img/ProfileDefault.png');
+
+  appIcon.on("double-click", function () {
+    mainWindow.show();
+  });
 
   const contextMenu = Menu.buildFromTemplate([
       { label: 'Show', click: () => mainWindow.show() },
@@ -111,10 +160,7 @@ app.on('ready', () => {
 //   tray = new Tray("./src/ui/img/ProfileDefault.png");
 // });
 
-// tray.on("double-click", function () {
-//   mainWindow.show();
-//   tray.destroy();
-// });
+
 
 
 app.on('window-all-closed', function () {
