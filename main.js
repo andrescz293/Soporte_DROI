@@ -6,6 +6,7 @@ require('electron-reload')(__dirname)
 
 let mainWindow
 let login
+let supportWindow
 let num_window = 0;
 let tray;
 
@@ -47,7 +48,7 @@ ipcMain.on('asynchronous-message', (event, arg) => {
 
 ipcMain.on('Main_Channel' , (event, arg) => {
   console.log(arg);
-  if (arg == "Login_window") {
+  if (arg.action == "Login_window") {
     if (num_window == 0){
 
       // Oculta la ventana principal mientras este abierto el login
@@ -75,51 +76,91 @@ ipcMain.on('Main_Channel' , (event, arg) => {
     }
   }
 
-  if (arg == "login_Validation") {
+  if (arg.action == "Window_Support") {
+      
+      supportWindow = new BrowserWindow({ parent: mainWindow, modal: true, show: false , frame: false, 
+        resizable: true,
+        movable: true,
+        webPreferences: {
+          nodeIntegration: true,
+          contextIsolation: false,
+          enableRemoteModule: true,
+        }  })
+
+      supportWindow.loadFile(__dirname+`/src/ui/support.html`);
+      supportWindow.once('ready-to-show', () => {
+        supportWindow.show();      
+        supportWindow.webContents.send('Support_Channel' , { data: arg.data });
+
+        // Open the DevTools.
+        supportWindow.webContents.openDevTools()
+
+      })
+
+  }
+
+  if (arg.action == "login_Validation") {
     login.close();
     mainWindow.show();
     mainWindow.webContents.send('Index_Channel' , 'Login_Success');
     num_window = 0;
   }
 
-  if (arg == 'Minimize_Index') {
+  /* Botones index.html */
+  if (arg.action == 'Minimize_Index') {
     mainWindow.minimize(); 
   }
-  if (arg == 'Maximize_Index') {
+  if (arg.action == 'Maximize_Index') {
     if (!mainWindow.isMaximized()) {
       mainWindow.maximize();          
     } else {
       mainWindow.unmaximize();
     }
   }
-  if (arg == 'Close_Index') {
+  if (arg.action == 'Close_Index') {
     mainWindow.hide();
   }
 
-  if (arg == 'Minimize_Login') {
+  /* Botones support.html */
+
+  if (arg.action == 'Minimize_Support') {
+    supportWindow.minimize(); 
+  }
+  if (arg.action == 'Maximize_Support') {
+    if (!supportWindow.isMaximized()) {
+      supportWindow.maximize();          
+    } else {
+      supportWindow.unmaximize();
+    }
+  }
+  if (arg.action == 'Close_Support') {
+    supportWindow.close();
+  }
+
+  /* Botones login.html */
+
+  if (arg.action == 'Minimize_Login') {
     login.minimize(); 
   }
-  if (arg == 'Maximize_Login') {
+  if (arg.action == 'Maximize_Login') {
     if (!login.isMaximized()) {
       login.maximize();          
     } else {
       login.unmaximize();
     }
   }
-  if (arg == 'Close_Login') {
+  if (arg.action == 'Close_Login') {
     mainWindow.destroy();
     login.destroy();
     app.quit();
   }
   
-  // if( arg == "Close_Session"){
+  // if( arg.action == "Close_Session"){
   //   mainWindow.show();
   //   num_window = 0;
   // }
 
 })
-
-
 
 
 app.whenReady().then(() => {

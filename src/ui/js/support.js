@@ -5,11 +5,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
   /* CONTROL DE BOTONES DE VENTANA */
 
   document.getElementById("min-btn").addEventListener("click", function (e) {
-    ipcRenderer.send('Main_Channel' , {action:'Minimize_Login'});
+    ipcRenderer.send('Main_Channel' , {action:'Minimize_Support'});
   });
 
   document.getElementById("max-btn").addEventListener("click", function (e) {
-    ipcRenderer.send('Main_Channel' , {action:'Maximize_Login'});
+    ipcRenderer.send('Main_Channel' , {action:'Maximize_Support'});
     if ( document.getElementsByClassName("header_title")[0].classList.contains('block_drag') ) {
       document.getElementsByClassName("header_title")[0].classList.remove('block_drag');
       document.getElementsByClassName('header_title')[0].setAttribute('draggable', true);
@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   });
 
   document.getElementById("close-btn").addEventListener("click", function (e) {
-    ipcRenderer.send('Main_Channel' , {action:'Close_Login'});
+    ipcRenderer.send('Main_Channel' , {action:'Close_Support'});
   }); 
 
   /* CONTROL DE BOTONES DE VENTANA */
@@ -28,6 +28,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
 });
 
 
+
+ipcRenderer.on('Support_Channel' , (event , arg) => {
+  console.log(arg.data);
+})
 
 
 /* API LOGIN */
@@ -74,6 +78,5 @@ const ValidateUser = async () => {
 
   return false;
 };
-
 
 /* API LOGIN */

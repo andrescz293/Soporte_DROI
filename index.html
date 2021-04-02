@@ -3,17 +3,21 @@
   <head>
     <meta charset="UTF-8">
     <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
-    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
-    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'" />
-    <link rel="stylesheet" href="src/ui/css/bootstrap.min.css">
+    <!-- <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'" /> -->
+    <!-- <link rel="stylesheet" href="src/ui/css/bootstrap.min.css"> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+
     <link rel="stylesheet" href="src/ui/css/styles.css">
     <link rel="stylesheet" href="src/ui/css/font-awesome.min.css">
     <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/fontawesome.css">
     <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/brands.css">
     <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/solid.css">
-    <script defer src="/node_modules/@fortawesome/fontawesome-free/js/brands.js"></script>
-    <script defer src="/node_modules/@fortawesome/fontawesome-free/js/js/solid.js"></script>
-    <script defer src="/node_modules/@fortawesome/fontawesome-free/js/js/fontawesome.js"></script>
+    <script defer src="node_modules/@fortawesome/fontawesome-free/js/brands.js"></script>
+    <script defer src="node_modules/@fortawesome/fontawesome-free/js/solid.js"></script>
+    <script defer src="node_modules/@fortawesome/fontawesome-free/js/fontawesome.js"></script>
 
 
     <!-- <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css"> -->
@@ -41,8 +45,6 @@
       </div>
     </div>
 
-    
-  
     <main class="container-fluid">
 
       <div class="header_window titlebar container-flex" >
@@ -91,7 +93,7 @@
 
         <div class="container-blocks-2">
           <div style="float: right;">
-            <button class="btn btn-danger" onclick="closeSession()">  <i class="fas fa-power-off"></i> </button>
+            <button class="btn btn-danger" onclick="closeSession()">  <i class="fas fa-power-off "></i> </button>
           </div>
         </div>
       </div>
@@ -101,59 +103,16 @@
       <div class="title">
         <h2>Soportes pendientes</h2>
       </div>
+      <div class="form-check form-switch" >
+        <label for="check_All" class="form-check-label"> Listar finalizadas</label>
+        <input type="checkbox" name="check_All" id="check_All" class="form-check-input">
+      </div>
 
       <div class="card border-info contenedor" id="list_pendings">
       </div>
 
-      
-
       <hr>
-      
     </main>
-      
-
-
-      <!-- <div class="card">
-        <div class="form-group">
-          <label for="" class="control-label col-sm-3"> <strong> Usuario:</strong> <span id="user_name"> Felipe </span> </label>
-          <div style="float: right;">
-            <button class="btn btn-danger" onclick="closeSession()"> Cerrar sesión </button>
-          </div>
-        </div>
-      </div>
-   -->
-      <!-- 
-  
-      <div class="card border-primary" id="list_pendings">
-        <div class="card-body">
-          <span class="card-date">02/03/2021</span>
-          <h4 class="card-title">Empresa </h4>
-  
-          <div class="form-group">
-            <label for="" class="control-label"> <strong>Asunto:</strong> Logo impresora </label>
-          </div>
-  
-          <div class="form-group">
-  
-            <label for="" class="control-label "> <strong>Estado:</strong> </label>
-  
-            <div class="" >
-              <select name="" id="" class="form-control">
-                <option value="Pending">Pendiente</option>
-                <option value="Pending">Finalizado</option>
-              </select>  
-            </div>
-            <br>
-  
-            <button type="button"  id="new_window">Launch modal</button>
-          </div> 
-  
-          <div id="resultDiv"></div>
-            
-        </div>
-      </div>
- 
-    </main> -->
     <script src="./renderer.js"></script>
   </body>
 </html>

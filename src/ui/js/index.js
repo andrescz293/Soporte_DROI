@@ -2,11 +2,12 @@ const ipcRenderer = require('electron').ipcRenderer;
 let data_user
 let Array_Pendings = [];
 let Array_LastConsult = [];
+let total_pendings = 0;
 
 document.addEventListener("DOMContentLoaded", function(event) {
   if ( localStorage.getItem('user_data')  == null || localStorage.getItem('user_data')  ==  "" ) {
     console.log('sin usuario');
-    ipcRenderer.send('Main_Channel' , 'Login_window');
+    ipcRenderer.send('Main_Channel' , {action:'Login_window'});
   }else{
     load_user()
   }
@@ -14,11 +15,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
     /* CONTROL DE BOTONES DE VENTANA */
 
     document.getElementById("min-btn").addEventListener("click", function (e) {
-      ipcRenderer.send('Main_Channel' , 'Minimize_Index');
+      ipcRenderer.send('Main_Channel' , {action:'Minimize_Index'});
     });
   
     // document.getElementById("max-btn").addEventListener("click", function (e) {
-    //   ipcRenderer.send('Main_Channel' , 'Maximize_Index');
+    //   ipcRenderer.send('Main_Channel' , {action:'Maximize_Index'});
     //   if ( document.getElementsByClassName("header_title")[0].classList.contains('block_drag') ) {
     //     document.getElementsByClassName("header_title")[0].classList.remove('block_drag');
     //     document.getElementsByClassName('header_title')[0].setAttribute('draggable', true);
@@ -29,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     // });
   
     document.getElementById("close-btn").addEventListener("click", function (e) {
-      ipcRenderer.send('Main_Channel' , 'Close_Index');
+      ipcRenderer.send('Main_Channel' , {action:'Close_Index'});
     }); 
   
     /* CONTROL DE BOTONES DE VENTANA */
@@ -40,7 +41,6 @@ ipcRenderer.on('Index_Channel' , (event , arg) => {
     load_user();
   }
 })
-
 
 const GetPendingSupports = async (Id_Advisor) => {
   console.log("Getting data pending...")
@@ -59,13 +59,14 @@ const GetPendingSupports = async (Id_Advisor) => {
 
   if (JSON.stringify(Array_LastConsult) !== JSON.stringify(Array_Pendings)) {
     console.log('Nuevos datos');
+    Total_News = Object.keys(data).length - Object.keys(Array_LastConsult).length
     Array_LastConsult = data
-    Array_Pendings = data
 
-    notifyMe("New_Support" , {Body: "..." , Tittle: "Nuevo soporte"})
 
+    notifyMe("New_Support" , {Body: "..." , Tittle: "Nuevo soporte, Soportes: "+Total_News })
     if ( Array.isArray(Array_Pendings) ) {
       List_PendingSupports();
+      
     }else{
       document.getElementById('list_pendings').innerHTML = Array_Pendings.status.text
     }
@@ -81,9 +82,9 @@ const GetPendingSupports = async (Id_Advisor) => {
 
 function closeSession (){
   localStorage.removeItem('user_data');
-  ipcRenderer.send('Main_Channel' , 'Login_window');
+  ipcRenderer.send('Main_Channel' , {action:'Login_window'});
   // setTimeout(() => {
-  //   ipcRenderer.send('Main_Channel' , 'login_Validation');  
+  //   ipcRenderer.send('Main_Channel' , {action:'login_Validation'});  
   // }, 1000)
 }
 
@@ -91,7 +92,10 @@ function load_user(){
   data_user = JSON.parse(localStorage.getItem('user_data'));
   document.getElementById('user_name').innerHTML = data_user.Treatment +" "+ data_user.First_Name +" "+ data_user.Surname;
   document.getElementById('user_rol').innerHTML = data_user.Name_Roll;
-
+  
+  if (Array_Pendings.length === 0) {
+    document.getElementById('list_pendings').innerHTML = '<div style=" text-align:center"><i style="font-size:30px;" class="fas fa-spinner fa-spin"></i></div>';
+  }
   // Reload de soportes pendientes 
   setInterval(() => {
     GetPendingSupports(data_user.Code_Adviser);
@@ -101,26 +105,69 @@ function load_user(){
 
 function List_PendingSupports (){
   let info_show = "";
+  let state_show = "";
   Array_Pendings.forEach(element => {
-     info_show = info_show+`
 
-    <div class="container-blocks pendings-block">
-        <div class="p-block-1">
-          <span class="" > <kbd>${element.Id}</kbd> </span>
+    moment.locale('es')
+    
+    Description = ( element.Description.length > 100 ) ?  element.Description.substr(0,100)+'...' : element.Description ;
+
+    switch (element.State) {
+      case 'Finalized':
+        state_show = "Finalizado";
+        break;
+      case 'Pending':
+        state_show = "Pendiente";
+        break;
+      case 'Delayed':
+        state_show = "Retrasado";
+        break;
+      case 'Paused':
+        state_show = "Pausado";
+        break;
+    }
+
+    TimeShow = moment.unix( element.Date );
+    // total_pendings = (element.State !== "Finalized") ? total_pendings++ : total_pendings ;
+    info_show = info_show+`
+
+    <div class="container-blocks pendings-block container-${element.State} " onclick="load_Window_Support(${element.Id})">
+
+        <div class="row div_block">
+          <div class="p-block-business">
+            <span> ${element.Business_Name.toUpperCase()} </span>
+          </div>
+          <div class="p-block-state ${element.State}">
+            <li > <span>${state_show} </span> </li>
+          </div>
         </div>
-        <div class="p-block-2">
-          <p> ${element.Business_Name} </p>
-          <p> <b>  ${element.Description} </b> </p>
+
+        <div class="row div_block">
+          <div class="p-block-2">
+            <p> <b>  ${Description} </b> </p>
+          </div>
         </div>
-        <div class="p-block-3">
-          <i class="fas fa-arrow-circle-right"></i>
+
+        <div class="row div_block">
+          <div class="p-block-id">
+            <span class="" > ID: <b>${element.Id}</b> </span>
+          </div>
+          <div class="p-block-date">
+            <span class="" > ${TimeShow.fromNow()} </span>
+          </div>
         </div>
+
       </div>
   `;  
   });
 
   document.getElementById('list_pendings').innerHTML = info_show;
+  // notifyMe( 'New_Support' , {Title:'Soportes sin finalizar ' + total_pendings , Body:'' }  )
   
+}
+
+function load_Window_Support( Id_Support ){
+  ipcRenderer.send('Main_Channel' , {action:'Window_Support' , data:Id_Support });
 }
 
 function  notifyMe(Type_Alert , data_Alert)  {  
