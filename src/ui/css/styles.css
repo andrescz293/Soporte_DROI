@@ -17,15 +17,14 @@ html {
   -webkit-user-select: none;
   -webkit-app-region: drag;
   position: fixed;
-    top: -7px;
-    padding: 0 0 38px 0 !important;
-    background: #fff;
-    border-bottom: 1px solid #cccc;
-    border-top: 6px solid #56baed;
-    z-index: 1;
-    padding-right: 0px !important;
-    margin-left: -15px;
-    margin-top: 0px;
+  top: -7px;
+  padding: 0 0 30px 0 !important;
+  background: #fff;
+  border-bottom: 1px solid #cccc;
+  border-top: 6px solid #56baed;
+  z-index: 1;
+  padding-right: 0px !important;
+  margin-left: -12px;
 }
 .block_drag{
   -webkit-app-region: no-drag  !important;
@@ -48,11 +47,10 @@ html {
 }
 
 .header_title{
-  -ms-flex-item-align: start;
   position: absolute;
   top: 0;
   left: 0;
-  padding: 4px 9px 3px;
+  padding: 0px 9px 3px;
   color: var(--text-muted);
 }
 .winButton{
@@ -134,6 +132,7 @@ html {
   box-shadow: 0.4px 0.4px 5px -2px;
   border-radius: 4px;
   margin: 4px 0px;
+  cursor: pointer;
 }
 
 .p-block-1{
@@ -153,9 +152,67 @@ html {
   font-size: 26px;
   color: #00356dc9;
 }
-.p-block-2 p{
-  /* font-weight: bolder; */
+.p-block-2 p{  
   font-family: 'San Francisco';
+  color: black;
+  font-weight: bolder;
+}
+
+.p-block-business{
+  flex: 1 50%;
+  font-size: 12px;
+}
+.p-block-state{
+  flex: 1 50%;
+  text-align: end;
+  font-weight: 500;
+}
+.p-block-id{
+  flex: 1 30%;
+  font-size: 12px;
+  align-self: flex-end;
+}
+.p-block-date{
+  flex: 1 70%;
+  font-size: 12px;
+  text-align: end;
+  align-self: flex-end;
+}
+
+
+.container-Pending{
+  border-left: 4px solid #ff501e;
+}
+.container-Finalized{
+  border-left: 4px solid #56cc9d;
+}
+.container-Paused{
+  border-left: 4px solid #44b3ca;
+}
+.container-Delayed{
+  border-left: 4px solid #ffbe34;
+}
+
+.Finalized  li{
+  color: #56cc9d;
+}
+.Pending  li{
+  color: #ff501e;
+}
+.Paused  li{
+  color: #44b3ca;
+}
+.Delayed  li{
+  color: #ffbe34;
+}
+
+.p-block-state li span{
+color: #888;
+}
+
+.div_block{
+  width: 100%;
+  margin-left: 0 !important;
 }
 
 label{
@@ -192,3 +249,4 @@ p{
 .contenedor::-webkit-scrollbar-track {
   border-radius: 10px;  
 }
+

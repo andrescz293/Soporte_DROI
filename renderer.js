@@ -10,13 +10,13 @@
 //validar usuario
 
 
-document.getElementById('new_window').addEventListener('click', function (e) {
-  ipcRenderer.send('asynchronous-message' , 'new_window');
-});
+// document.getElementById('new_window').addEventListener('click', function (e) {
+//   ipcRenderer.send('asynchronous-message' , 'new_window');
+// });
 
-document.getElementById('new_children').addEventListener('click', function (e) {
-  ipcRenderer.send('asynchronous-message' , '');
-});
+// document.getElementById('new_children').addEventListener('click', function (e) {
+//   ipcRenderer.send('asynchronous-message' , '');
+// });
 
 
 
