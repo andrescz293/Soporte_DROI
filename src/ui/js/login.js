@@ -43,7 +43,9 @@ const ValidateUser = async () => {
     return false;
   }
   if ( document.getElementById('Password').value == ""  ) {
-    alert('Debe ingresar una conatraseña');
+    // alert('Debe ingresar una contraseña');
+    notifyMe( 'Login' , {Title:'Campo vacio' , Body:'Debe ingresar una contraseña' }  )
+
     return false;
   }
 

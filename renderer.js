@@ -21,19 +21,16 @@
 
 function  notifyMe(Type_Alert , data_Alert)  {  
   console.log('test');
-  let Tittle = "";
-  let Body = "";
-  // if (Type_Alert == 'New_Support') {
-    Body = data_Alert.Body;
-    Tittle = data_Alert.Title;
-  // }
+  let Body = data_Alert.Body;
+  let Tittle = data_Alert.Title;
+  let icon = (Type_Alert == 'Login') ? (__dirname)+"/img/ProfileDefault.png" : (__dirname)+"/src/ui/img/ProfileDefault.png" ;
   if  (!("Notification"  in  window))  {   
       alert("Este navegador no soporta notificaciones de escritorio");  
   }  
   else  if  (Notification.permission  ===  "granted")  {
       var  options  =   {
           body:   Body,
-          icon:   (__dirname)+"/src/ui/img/ProfileDefault.png",
+          icon:   icon,
           // dir :   "ltr"
       };
       var  notification  =  new  Notification(Tittle, options);
