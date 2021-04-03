@@ -41,6 +41,29 @@ function createWindow (  ) {
   // Open the DevTools.
   mainWindow.webContents.openDevTools()
 }
+
+function createWindowLogin (  ) {
+
+  // Crea la ventana principal.
+  login = new BrowserWindow({ parent: mainWindow, modal: true, show: false , frame: false, 
+    resizable: true,
+    movable: true,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+    }  })
+
+    login.loadFile(__dirname+`/src/ui/login.html`);
+    login.once('ready-to-show', () => {
+      login.show();      
+
+      // Open the DevTools.
+      login.webContents.openDevTools()
+
+    })
+}
+
 // Listeners de los renders principal y secundarios
 ipcMain.on('asynchronous-message', (event, arg) => {
     
@@ -54,23 +77,7 @@ ipcMain.on('Main_Channel' , (event, arg) => {
       // Oculta la ventana principal mientras este abierto el login
       mainWindow.hide();
       
-      login = new BrowserWindow({ parent: mainWindow, modal: true, show: false , frame: false, 
-        resizable: true,
-        movable: true,
-        webPreferences: {
-          nodeIntegration: true,
-          contextIsolation: false,
-          enableRemoteModule: true,
-        }  })
-
-      login.loadFile(__dirname+`/src/ui/login.html`);
-      login.once('ready-to-show', () => {
-        login.show();      
-
-        // Open the DevTools.
-        login.webContents.openDevTools()
-
-      })
+      createWindowLogin();
 
       num_window++;
     }
@@ -100,8 +107,8 @@ ipcMain.on('Main_Channel' , (event, arg) => {
   }
 
   if (arg.action == "login_Validation") {
-    login.close();
     mainWindow.show();
+    login.hide();
     mainWindow.webContents.send('Index_Channel' , 'Login_Success');
     num_window = 0;
   }

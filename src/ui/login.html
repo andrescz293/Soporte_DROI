@@ -37,10 +37,10 @@
       <img src="img/Droi_Logo.png" id="icon" alt="User Icon" />
     </div>
 
-    <form id="form_login" >
+    <form id="form_login" onsubmit="event.preventDefault();  ValidateUser()" >
       <input type="text" id="User" class="fadeIn second" name="User" placeholder="Usuario">
       <input type="password" id="Password" class="fadeIn third" name="Password" placeholder="Contraseña">
-      <input type="button" class="fadeIn fourth" onclick="ValidateUser()"  value="Iniciar sesión">
+      <input type="submit" class="fadeIn fourth" onsubmit="ValidateUser()" onclick="ValidateUser()"  value="Iniciar sesión">
     </form>
 
     <div id="response_login">
@@ -53,3 +53,5 @@
 
   </div>
 </div>
+</body>
+<script src="../../renderer.js"></script>

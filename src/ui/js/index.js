@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     console.log('sin usuario');
     ipcRenderer.send('Main_Channel' , {action:'Login_window'});
   }else{
-    load_user()
+    load_user();
   }
 
     /* CONTROL DE BOTONES DE VENTANA */
@@ -32,9 +32,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
     document.getElementById("close-btn").addEventListener("click", function (e) {
       ipcRenderer.send('Main_Channel' , {action:'Close_Index'});
     }); 
+
+    document.getElementById("check_All").addEventListener('change' , function (e) {
+      GetPendingSupports(data_user.Code_Adviser , 0);
+  })
   
     /* CONTROL DE BOTONES DE VENTANA */
 });
+
 
 ipcRenderer.on('Index_Channel' , (event , arg) => {
   if (arg == 'Login_Success') {
@@ -42,10 +47,19 @@ ipcRenderer.on('Index_Channel' , (event , arg) => {
   }
 })
 
-const GetPendingSupports = async (Id_Advisor) => {
+const GetPendingSupports = async (Id_Advisor , notify = 1) => {
   console.log("Getting data pending...")
 
-  const request = await fetch("https://www.gesadmin.co/licenses/apidroi/public/apr/supports/pendings/"+Id_Advisor)
+  let list_all = document.getElementById("check_All").checked;
+  let data_login = { Id: Id_Advisor , Check_All: list_all }
+
+  const request = await fetch("https://www.gesadmin.co/licenses/apidroi/public/apr/supports/pendings" , {
+    method:'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body:JSON.stringify(data_login)
+  })
   .catch(function(error) {
     console.log('Hubo un problema con la petición Fetch:' + error.message);
   });
@@ -62,8 +76,9 @@ const GetPendingSupports = async (Id_Advisor) => {
     Total_News = Object.keys(data).length - Object.keys(Array_LastConsult).length
     Array_LastConsult = data
 
-
-    notifyMe("New_Support" , {Body: "..." , Tittle: "Nuevo soporte, Soportes: "+Total_News })
+    if (notify === 1) {
+      notifyMe("New_Support" , {Body: "..." , Title: "Nuevo soporte, Soportes: "+Total_News })
+    }
     if ( Array.isArray(Array_Pendings) ) {
       List_PendingSupports();
       
@@ -170,25 +185,5 @@ function load_Window_Support( Id_Support ){
   ipcRenderer.send('Main_Channel' , {action:'Window_Support' , data:Id_Support });
 }
 
-function  notifyMe(Type_Alert , data_Alert)  {  
-  let Tittle = "";
-  let Body = "";
-  if (Type_Alert == 'New_Support') {
-    Body = data_Alert.Body;
-    Tittle = data_Alert.Tittle;
-  }
-  if  (!("Notification"  in  window))  {   
-      alert("Este navegador no soporta notificaciones de escritorio");  
-  }  
-  else  if  (Notification.permission  ===  "granted")  {
-      var  options  =   {
-          body:   Body,
-          icon:   (__dirname)+"/src/ui/img/ProfileDefault.png",
-          // dir :   "ltr"
-      };
-      var  notification  =  new  Notification(Tittle, options);
-  }
-    
 
-}
 
