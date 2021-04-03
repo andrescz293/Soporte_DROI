@@ -1,4 +1,5 @@
 const ipcRenderer = require('electron').ipcRenderer;
+const Alert = require("electron-alert");
 
 document.addEventListener("DOMContentLoaded", function(event) {
     
@@ -32,11 +33,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 /* API LOGIN */
 const ValidateUser = async () => {
+  
 
   console.log('validando datos...');
 
   if ( document.getElementById('User').value == ""  ) {
-    alert('Debe ingresar un nombre de usuario');
+    // alert('Debe ingresar un nombre de usuario');
+    notifyMe( 'Login' , {Title:'Campo vacio' , Body:'Debe ingresar un nombre de usuario' }  )
     return false;
   }
   if ( document.getElementById('Password').value == ""  ) {
