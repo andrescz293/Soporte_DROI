@@ -1,5 +1,4 @@
 const ipcRenderer = require('electron').ipcRenderer;
-const Alert = require("electron-alert");
 
 document.addEventListener("DOMContentLoaded", function(event) {
     
@@ -28,13 +27,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 });
 
-
-
-
+console.log("login");
 /* API LOGIN */
 const ValidateUser = async () => {
   
-
   console.log('validando datos...');
 
   if ( document.getElementById('User').value == ""  ) {
@@ -61,7 +57,6 @@ const ValidateUser = async () => {
     },
     body:JSON.stringify(data_login)
   })
-  .then( res => res.json())
   .then( data =>{
     if (data.response.status == "success") {
       console.log(data.response);
