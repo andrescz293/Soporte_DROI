@@ -17,7 +17,7 @@
 // document.getElementById('new_children').addEventListener('click', function (e) {
 //   ipcRenderer.send('asynchronous-message' , '');
 // });
-
+let Support_List = [];
 
 function  notifyMe(Type_Alert , data_Alert)  {  
   console.log('test');

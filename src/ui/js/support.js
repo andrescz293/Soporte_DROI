@@ -1,6 +1,21 @@
 const ipcRenderer = require('electron').ipcRenderer;
+const remote = require('electron').remote
+
 
 document.addEventListener("DOMContentLoaded", function(event) {
+  
+  /* ESCUCHAS OPCIONES SOPORTE */
+  document.getElementById("info").addEventListener("click", function (e) {
+    load_content("info" , document.getElementById('support_selected').value )
+  });
+  document.getElementById("evo").addEventListener("click", function (e) {
+    load_content("evo" , document.getElementById('support_selected').value )
+  });
+  document.getElementById("chat").addEventListener("click", function (e) {
+    load_content("chat" , document.getElementById('support_selected').value )
+  });
+  /* FIN ESCUCHAS OPCIONES SOPORTE */
+
     
   /* CONTROL DE BOTONES DE VENTANA */
 
@@ -27,11 +42,51 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 });
 
-
-
 ipcRenderer.on('Support_Channel' , (event , arg) => {
-  console.log(arg.data);
+  Search_Id = Support_List.map(element => element.Id_Support)
+  if (Search_Id.includes(arg.data) == false) {
+    Support_List.push({Id_Support: arg.data })    
+    console.log(Support_List);
+    list_supports();
+    document.getElementById('support_selected').value = arg.data
+  }
 })
+
+function list_supports(){
+  let List= ""
+  if(Support_List.length !== 0 ){
+    Support_List.forEach(element => {
+    Search_Id = Support_List.map(element => element.Id_Support)
+    Search_Id = Search_Id.indexOf(element.Id_Support)
+    List += `
+    <div class="content-block">
+      <div class="content-icon" onclick="delete_support(${Search_Id})">
+        <i class="fas fa-times-circle"></i>
+      </div>
+      <div class="content-text">
+        <p> ${element.Id_Support} </p>
+      </div>
+    </div>
+    `
+    });
+  }else{
+    var window = remote.getCurrentWindow();
+    window.hide();
+  }
+
+  document.getElementById('nav_list').innerHTML = List
+
+}
+
+function load_content ( type , id ){
+console.log(type);
+console.log(id);
+}
+
+function delete_support( index ){
+  Support_List.splice( index, 1 );
+  list_supports();
+}
 
 
 /* API LOGIN */

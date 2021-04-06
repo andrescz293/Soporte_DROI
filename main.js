@@ -6,7 +6,7 @@ require('electron-reload')(__dirname)
 
 let mainWindow
 let login
-let supportWindow
+let supportWindow = {}
 let num_window = 0;
 let tray;
 
@@ -66,7 +66,7 @@ function createWindowLogin (  ) {
 
 // Listeners de los renders principal y secundarios
 ipcMain.on('asynchronous-message', (event, arg) => {
-    
+
 })
 
 ipcMain.on('Main_Channel' , (event, arg) => {
@@ -84,25 +84,32 @@ ipcMain.on('Main_Channel' , (event, arg) => {
   }
 
   if (arg.action == "Window_Support") {
-      
-      supportWindow = new BrowserWindow({ parent: mainWindow, modal: true, show: false , frame: false, 
-        resizable: true,
-        movable: true,
-        webPreferences: {
-          nodeIntegration: true,
-          contextIsolation: false,
-          enableRemoteModule: true,
-        }  })
+    
+    if ( Object.entries(supportWindow).length === 0 ) {
+      supportWindow = new BrowserWindow({  modal: true, show: false , frame: false, 
+      resizable: true,
+      movable: true,
+      icon: path.join(__dirname, "/src/ui/img/ProfileDefault.png"),
+      webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false,
+        enableRemoteModule: true,
+      }  })
 
       supportWindow.loadFile(__dirname+`/src/ui/support.html`);
       supportWindow.once('ready-to-show', () => {
-        supportWindow.show();      
-        supportWindow.webContents.send('Support_Channel' , { data: arg.data });
+      supportWindow.show();
+        
 
-        // Open the DevTools.
+          // Open the DevTools.
         supportWindow.webContents.openDevTools()
 
       })
+    }else{
+      supportWindow.show();
+    }
+
+    supportWindow.webContents.send('Support_Channel' , { data: arg.data });
 
   }
 
@@ -141,7 +148,7 @@ ipcMain.on('Main_Channel' , (event, arg) => {
     }
   }
   if (arg.action == 'Close_Support') {
-    supportWindow.close();
+    supportWindow.hide();
   }
 
   /* Botones login.html */

@@ -1,0 +1,184 @@
+@font-face{
+  font-family: 'San Francisco';
+  src: url('SFUIText-Light.otf');
+}
+
+html {
+  background-color: #56baed;
+  font-family: 'San Francisco';
+}
+body{
+  overflow: hidden;
+  
+}
+
+/* HEADER SECTION */
+.window-header{
+  flex-direction: row-reverse;
+  height: 20px;
+  margin-top: 4px;
+  display: flex;
+  text-align: center;
+  align-items: center;
+}
+
+.titlebar {
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+  border-bottom: 1px solid #9e9e9e;
+}
+.block_drag{
+  -webkit-app-region: no-drag  !important;
+}
+
+.titlebar-button {
+  -webkit-app-region: no-drag;
+}
+
+.header_title{
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 4px 9px 3px;
+  color: var(--text-muted);
+}
+.winButton{
+  line-height: 200px;
+  position: relative;
+  top: 0px;
+  cursor: pointer;
+  padding-top: 4px;
+  width: 35px;
+  height: 20px;
+  pointer-events: auto;
+  -webkit-app-region: no-drag;
+}
+
+.ButtonClose:hover{
+  color: #fff;
+  background-color: #f04747;
+}
+.ButtonMinMax:hover{
+  background-color: rgba(199, 199, 199, 0.473);
+  color: var(--interactive-hover);
+}
+
+.container-flex{
+  margin-top: 6px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.svg_logo{
+  width: 42px;
+  margin-top: 2px;
+}
+
+/* END HEADER SECTION */
+
+/* BODY SECTION */
+
+.window-content{
+  display: flex;
+  height: 100vh;
+}
+.support-list{
+  order: 1;
+  height: 100vh;
+  width: 5rem;
+  background-color: #f9f9f9;
+}
+.contentBody{
+  order: 2;
+  width: 100%;
+  display: flex;
+  flex: 0 1 auto;
+
+}
+.support-type{
+  order: 1;
+  width: 300px;
+  height: 100vh;
+  background-color: #f3f3f3;
+}
+.support-type h5{
+  text-align: center;
+  padding-top: 15px;
+}
+.container-types p{
+  margin: 10px;
+  cursor: pointer;
+  color: #888;
+}
+.support-content{
+  order: 2;
+  width: 100%;
+  height: 100vh;
+  background-color: #dadada;
+}
+
+.content-block{
+  border: 3px dotted #0fd7ff;
+  text-align: center;
+  height: 50px;
+  margin: 14px 10px;
+  border-radius: 12px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  background: #ffffff;
+}
+.content-icon{
+  position: absolute;
+  bottom: 40px;
+  left: 43px;
+  font-size: 19px;
+  color: red;
+}
+.content-text{
+  flex: 1;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+label{
+  margin-bottom: 0 !important;
+  font-family: 'San Francisco';
+}
+p{
+  margin-bottom: 0 !important;
+  font-family: 'San Francisco';
+}
+
+.contenedor::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+
+.contenedor::-webkit-scrollbar:vertical {
+  width:10px;
+}
+
+.contenedor::-webkit-scrollbar-button:increment,.contenedor::-webkit-scrollbar-button {
+  display: none;
+} 
+
+.contenedor::-webkit-scrollbar:horizontal {
+  height: 10px;
+}
+
+.contenedor::-webkit-scrollbar-thumb {
+  background-color: #797979;
+  border-radius: 20px;
+  border: 2px solid #f1f2f3;
+}
+
+.contenedor::-webkit-scrollbar-track {
+  border-radius: 10px;  
+}
+
+/* FOOTER SECTION */
+.window-footer{
+
+}
+
