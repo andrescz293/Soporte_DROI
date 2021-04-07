@@ -57,6 +57,7 @@ const ValidateUser = async () => {
     },
     body:JSON.stringify(data_login)
   })
+  .then( res => res.json())
   .then( data =>{
     if (data.response.status == "success") {
       console.log(data.response);

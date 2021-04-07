@@ -88,6 +88,8 @@ ipcMain.on('Main_Channel' , (event, arg) => {
     if ( Object.entries(supportWindow).length === 0 ) {
       supportWindow = new BrowserWindow({  modal: true, show: false , frame: false, 
       resizable: true,
+      width: 980,
+      height: 650,
       movable: true,
       icon: path.join(__dirname, "/src/ui/img/ProfileDefault.png"),
       webPreferences: {

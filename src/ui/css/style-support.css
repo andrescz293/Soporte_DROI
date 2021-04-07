@@ -115,6 +115,10 @@ body{
   width: 100%;
   height: 100vh;
   background-color: #dadada;
+  background-image: url(./../img/Droi_Logo.png);
+  background-repeat: no-repeat;
+  background-blend-mode: multiply;
+  background-position: center;
 }
 
 .content-block{
@@ -140,6 +144,43 @@ body{
   flex: 1;
   font-size: 20px;
   font-weight: 600;
+}
+
+.header-content{
+  font-family: 'San Francisco';
+}
+.header-content h2{
+  border-bottom: 1px solid #888;
+  margin: 0% 5%;
+  padding-top: 15px;
+}
+.info-support{
+  display: none;
+  height: 92vh;
+  background: #FFF;
+  margin: 2%;
+  border-radius: 5px;
+  box-shadow: 0.5px 0.5px 12px -4px;
+}
+.body-content{
+  display: flex;
+  font-family: 'San Francisco';
+  flex-flow: row wrap;
+  justify-content: space-around;
+
+}
+
+.flex-item{
+  /* background: tomato; */
+  width: 245px;
+  height: 40px;
+  margin-top: 10px;
+  line-height: 40px;
+  text-align: center;
+}
+
+.title-span{
+  font-weight: 700;
 }
 
 label{
