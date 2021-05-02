@@ -185,11 +185,22 @@ input[type=password]:placeholder {
   text-align: center;
   align-items: center;
 
+  
+
 }
 
 .titlebar {
   -webkit-user-select: none;
   -webkit-app-region: drag;
+  position: fixed;
+  top: -7px;
+  padding: 0 0 26px 0 !important;
+  background: #fff;
+  border-bottom: 1px solid #cccc;
+  border-top: 6px solid #56baed;
+  z-index: 1;
+  padding-right: 0px !important;
+  width: 100%;
 }
 .block_drag{
   -webkit-app-region: no-drag  !important;
@@ -209,13 +220,14 @@ input[type=password]:placeholder {
 .winButton{
   line-height: 200px;
   position: relative;
-  top: 2px;
+  top: 0px;
   cursor: pointer;
-  padding-top: 8px;
-  width: 40px;
-  height: 25px;
+  width: 42px;
+  height: 26px;
   pointer-events: auto;
   -webkit-app-region: no-drag;
+  place-self: flex-start;
+  padding-top: 8px;
 }
 
 .ButtonClose:hover{

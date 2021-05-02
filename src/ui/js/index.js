@@ -4,6 +4,7 @@ let Array_Pendings = [];
 let Array_LastConsult = [];
 let total_pendings = 0;
 
+
 document.addEventListener("DOMContentLoaded", function(event) {
   if ( localStorage.getItem('user_data')  == null || localStorage.getItem('user_data')  ==  "" ) {
     console.log('sin usuario');
@@ -182,6 +183,7 @@ function List_PendingSupports (){
 }
 
 function load_Window_Support( Id_Support ){
+  // Support_List.push({Id_Support: Id_Support})
   ipcRenderer.send('Main_Channel' , {action:'Window_Support' , data:Id_Support });
 }
 

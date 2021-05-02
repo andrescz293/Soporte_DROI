@@ -17,23 +17,23 @@
 // document.getElementById('new_children').addEventListener('click', function (e) {
 //   ipcRenderer.send('asynchronous-message' , '');
 // });
-
+let Support_List = [];
 
 function  notifyMe(Type_Alert , data_Alert)  {  
   console.log('test');
   let Body = data_Alert.Body;
   let Tittle = data_Alert.Title;
   let icon = (Type_Alert == 'Login') ? (__dirname)+"/img/ProfileDefault.png" : (__dirname)+"/src/ui/img/ProfileDefault.png" ;
-  if  (!("Notification"  in  window))  {   
-      alert("Este navegador no soporta notificaciones de escritorio");  
-  }  
+	if  (!("Notification"  in  window))  {   
+		alert("Este navegador no soporta notificaciones de escritorio");  
+	}  
   else  if  (Notification.permission  ===  "granted")  {
-      var  options  =   {
-          body:   Body,
-          icon:   icon,
-          // dir :   "ltr"
-      };
-      var  notification  =  new  Notification(Tittle, options);
+		var  options  =   {
+			body:   Body,
+			icon:   icon,
+			// dir :   "ltr"
+		};	
+		var  notification  =  new  Notification(Tittle, options);
   }
     
 
